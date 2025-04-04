@@ -1,0 +1,7 @@
+services:
+  - name: file-share-service
+    image: koyeb/app
+    port: 8080
+    env:
+      - name: DATABASE_URL
+        value: postgresql://user:pass@host:port/dbname
