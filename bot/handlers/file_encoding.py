@@ -1,11 +1,9 @@
-import shutil
-from fastapi import UploadFile
-from .file_encoding import encode_file
+import hashlib
+import os
 
-async def share_file(file: UploadFile):
-    file_path = f"uploads/{file.filename}"
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-    
-    encoded_file = encode_file(file_path)
-    return {"filename": file.filename, "encoded_path": encoded_file}
+def encode_file(file_path: str) -> str:
+    file_name = os.path.basename(file_path)
+    encoded_name = hashlib.md5(file_name.encode()).hexdigest()
+    encoded_path = f"encoded/{encoded_name}"
+    os.rename(file_path, encoded_path)
+    return encoded_path
