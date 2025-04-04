@@ -1,7 +1,18 @@
 services:
-  - name: file-share-service
-    image: koyeb/app
-    port: 8080
+  - name: file-share-bot
+    ports:
+      - port: 8080
+        http_path: /
+    routes:
+      - /:8080
     env:
       - name: DATABASE_URL
-        value: postgresql://user:pass@host:port/dbname
+        value: postgres://user:pass@host:port/dbname  # Update with your DB
+      - name: STORAGE_PATH
+        value: /koyeb/storage
+      - name: MAX_FILE_SIZE
+        value: "524288000"  # 500MB
+      - name: ALLOWED_EXTENSIONS
+        value: "mp4,mkv,avi,mov,pdf,docx"
+    docker:
+      image: koyeb/file-share-bot:latest
