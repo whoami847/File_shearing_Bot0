@@ -1,6 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List
-import os
 import json
 
 class Config(BaseSettings):
@@ -22,21 +21,11 @@ class Config(BaseSettings):
     PROTECT_CONTENT: bool = False
     PORT: int = 8080
 
-    @classmethod
-    def parse_list_env(cls, field_name: str, raw_value: str) -> List[int]:
-        """Parse comma-separated string into list of integers"""
-        try:
-            if raw_value.startswith("[") and raw_value.endswith("]"):
-                return json.loads(raw_value)
-            return [int(x.strip()) for x in raw_value.split(",")]
-        except (json.JSONDecodeError, ValueError) as e:
-            raise ValueError(f"Invalid format for {field_name}") from e
-
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",
-        json_loads=lambda s: [int(i) for i in s.split(",")] if "," in s else json.loads(s)
+        json_loads=lambda s: json.loads(s) if s.startswith('[') else [int(x) for x in s.split(',')]
     )
 
 config = Config()
