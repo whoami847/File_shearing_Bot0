@@ -1,0 +1,3 @@
+# Add this to .gitignore
+bot/sessions/*
+!bot/sessions/.gitkeep
