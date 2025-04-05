@@ -1,11 +1,8 @@
-from fastapi import Request
+from pyrogram import filters
+from pyrogram.types import Message
+from config import config
 
-async def security_headers_middleware(request: Request, call_next):
-    response = await call_next(request)
-    # Essential security headers for file sharing
-    response.headers.update({
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "DENY",
-        "Content-Security-Policy": "default-src 'self'"
-    })
-    return response
+async def protect_content_handler(_, message: Message):
+    if config.PROTECT_CONTENT:
+        message.protect_content = True
+    return message
