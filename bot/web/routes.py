@@ -1,7 +1,15 @@
-from fastapi import APIRouter
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 
-router = APIRouter()
+app = FastAPI()
 
-@router.get("/health")
+@app.get("/health")
 async def health_check():
-    return {"status": "ok"}
+    return JSONResponse(
+        content={"status": "ok"},
+        status_code=200
+    )
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8080)
