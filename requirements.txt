@@ -2,8 +2,7 @@ pyrogram==2.0.106
 motor==3.1.1
 TgCrypto==1.2.2
 python-dotenv==0.21.0
-uvicorn==0.23.2
+uvicorn==0.20.0
 fastapi==0.95.2
 aiohttp==3.8.6
-pydantic==1.10.13  # Last stable v1 release
-pydantic-settings==0.4.2  # Last v1-compatible release
+pydantic==1.10.7
