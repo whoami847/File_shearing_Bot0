@@ -1,9 +1,11 @@
-from fastapi import FastAPI
-from config import Config
-from database import engine, Base
+from pyrogram import filters
+from pyrogram.types import Message
+from config import config
+from utils.messages import start_message
+from utils.buttons import start_markup
 
-app = FastAPI()
-
-@app.on_event("startup")
-async def startup():
-    Base.metadata.create_all(bind=engine)
+async def start_handler(_, message: Message):
+    await message.reply(
+        start_message,
+        reply_markup=start_markup
+    )
