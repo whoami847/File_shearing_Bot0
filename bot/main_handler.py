@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from pyrogram import Client
+from pyrogram import Client, filters
 from bot.config import config
 
 # Configure logging
@@ -10,17 +10,28 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-async def main():
-    async with Client(
-        "my_bot",
-        api_id=config.API_ID,
-        api_hash=config.API_HASH,
-        bot_token=config.BOT_TOKEN,
-        in_memory=True  # Disable session file
-    ) as app:
-        logger.info("✅ Bot started successfully!")
-        await app.send_message("me", "Bot started successfully!")  # Test message
-        await asyncio.Event().wait()  # Keep running
+# Initialize client
+app = Client(
+    "my_bot",
+    api_id=config.API_ID,
+    api_hash=config.API_HASH,
+    bot_token=config.BOT_TOKEN,
+    in_memory=True
+)
+
+@app.on_message(filters.command("start"))
+async def start(client, message):
+    await message.reply("🚀 Bot is running!")
+
+async def run_bot():
+    await app.start()
+    logger.info("Bot started successfully")
+    await app.send_message(config.OWNER_ID, "🤖 Bot deployed and online!")
+    await asyncio.Event().wait()  # Keep running
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(run_bot())
+    except Exception as e:
+        logger.error(f"Bot crashed: {str(e)}")
+        raise
