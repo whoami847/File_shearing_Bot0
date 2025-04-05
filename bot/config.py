@@ -1,11 +1,26 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Config(BaseSettings):
-    API_ID: int = 18662358  # Your new API ID
-    API_HASH: str = "6ee14b1c055ba7466d6bf293852d3765"  # Your new API hash
-    BOT_TOKEN: str = "7671316803:AAFiG_mhL1wy7T1cTB-aL_ktjVAO0vwKvhU"  # From @BotFather
+    # Required Fields (Telegram)
+    API_ID: int
+    API_HASH: str
+    BOT_TOKEN: str
     
-    class Config:
-        env_file = ".env"
+    # Optional Fields with Default Values
+    OWNER_ID: int = 7282066033
+    ADMINS: list[int] = [7282066033, 6564441490]
+    CHANNEL_ID: int = -1002644513465
+    FSUB_CHANNELS: list[int] = [-1002644513465, -1002656647177]
+    DATABASE_URL: str = "mongodb+srv://Anime1:Anime1@cluster0.030ybld.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0"
+    DATABASE_NAME: str = "Cluster0"
+    AUTO_DELETE_TIME: int = 1200  # Minutes
+    PROTECT_CONTENT: bool = False
+    PORT: int = 8080
+
+    # Pydantic v2 Configuration
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore"  # Allow extra fields in .env
+    )
 
 config = Config()
