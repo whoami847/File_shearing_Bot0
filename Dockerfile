@@ -10,8 +10,8 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Upgrade pip first
-RUN pip install --upgrade pip
+# First upgrade pip and setuptools
+RUN pip install --upgrade pip setuptools
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
