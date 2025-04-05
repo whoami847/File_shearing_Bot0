@@ -1,1 +1,4 @@
-# Empty files to mark directories as Python packages
+# web/__init__.py
+from .routes import app
+
+__all__ = ["app"]
