@@ -1,14 +1,20 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
+  bot:
+    build: ./docker
     ports:
       - "8080:8080"
-    volumes:
-      - file_storage:/app/uploads
     environment:
-      - STORAGE_PATH=/app/uploads
+      - BOT_TOKEN=${BOT_TOKEN}
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6.0
+    volumes:
+      - mongo_data:/data/db
 
 volumes:
-  file_storage:
+  mongo_data:
