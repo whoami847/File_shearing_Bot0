@@ -1,20 +1,24 @@
 import asyncio
 from pyrogram import Client
-from bot.config import config  # Fixed import
-from bot.database import init_db
+from bot.config import config
+from bot.web.routes import router  # Correct import path
+from fastapi import FastAPI
 
-async def main():
-    await init_db()
+# Initialize Web App
+web_app = FastAPI()
+web_app.include_router(router)
+
+async def run_bot():
     bot = Client(
-        "my_bot",
+        "file_bot",
         api_id=config.API_ID,
         api_hash=config.API_HASH,
         bot_token=config.BOT_TOKEN
     )
     
-    await bot.start()
-    print("Bot started successfully!")
-    await asyncio.Event().wait()  # Keep running
+    async with bot:
+        print("🤖 Bot started successfully!")
+        await asyncio.Event().wait()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(run_bot())
