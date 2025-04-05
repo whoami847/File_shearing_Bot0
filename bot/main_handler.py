@@ -1,8 +1,7 @@
 import asyncio
 import logging
-import subprocess
 from pyrogram import Client, filters
-from pyrogram.errors import RPCError, ConnectionClosed, Timeout
+from pyrogram.errors import RPCError, ConnectionError, Timeout  # Fixed imports
 from bot.config import config
 
 # Configure logging
@@ -17,9 +16,9 @@ app = Client(
     api_id=config.API_ID,
     api_hash=config.API_HASH,
     bot_token=config.BOT_TOKEN,
-    in_memory=False,
-    workers=24,
-    sleep_threshold=180
+    in_memory=True,  # Changed to True for better Docker compatibility
+    workers=4,  # Reduced for container stability
+    sleep_threshold=60
 )
 
 @app.on_message(filters.command("start"))
@@ -27,15 +26,6 @@ async def start(client, message):
     await message.reply("🚀 Bot is running!")
 
 async def run_bot():
-    # Start FastAPI server in background
-    subprocess.Popen([
-        "uvicorn", 
-        "web.routes:app",
-        "--host", "0.0.0.0",
-        "--port", "8080"
-    ])
-    
-    # Bot connection loop
     while True:
         try:
             await app.start()
@@ -47,7 +37,7 @@ async def run_bot():
                 await asyncio.sleep(300)
                 await app.get_me()
                 
-        except (ConnectionClosed, Timeout, RPCError) as e:
+        except (ConnectionError, Timeout, RPCError) as e:  # Fixed error handling
             logger.error(f"Connection error: {e}, reconnecting in 5 seconds...")
             await asyncio.sleep(5)
         except Exception as e:
