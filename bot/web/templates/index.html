@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>File Sharing Service</title>
+    <title>File Share Bot</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Secure File Sharing</h1>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" required>
-            <button type="submit">Upload</button>
-        </form>
+        <h1>File Sharing Service</h1>
+        <div class="stats">
+            <p>Total Files: {{ files }}</p>
+            <p>Active Users: {{ users }}</p>
+        </div>
     </div>
 </body>
 </html>
