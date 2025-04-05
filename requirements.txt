@@ -1,8 +1,8 @@
 pyrogram==2.0.106
 motor==3.1.1
 TgCrypto==1.2.2
-python-dotenv>=0.21.0  # Updated version
+python-dotenv>=0.21.0
 pydantic-settings==2.2.1
-uvicorn==0.20.0
-fastapi==0.85.0
+uvicorn==0.23.2
+fastapi>=0.100.0  # Updated to support pydantic v2
 aiohttp==3.8.6
