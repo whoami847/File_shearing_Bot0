@@ -1,7 +1,7 @@
 import base64
+from datetime import datetime
 
-def encode_base64(data: str) -> str:
-    return base64.b64encode(data.encode()).decode()
-
-def decode_base64(data: str) -> str:
-    return base64.b64decode(data).decode()
+def generate_file_id():
+    return base64.urlsafe_b64encode(
+        datetime.now().isoformat().encode()
+    ).decode().rstrip("=")
