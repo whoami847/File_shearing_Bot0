@@ -2,14 +2,17 @@ version: '3.8'
 
 services:
   bot:
-    build: ./docker
+    build: .
     ports:
-      - "8080:8080" # Changed port
+      - "8080:8080"
     environment:
       - BOT_TOKEN=${BOT_TOKEN}
-      - DATABASE_URL=${DATABASE_URL}
+      - API_ID=${API_ID}
+      - API_HASH=${API_HASH}
+      - PORT=8080
     deploy:
       resources:
         limits:
           cpus: '1'
           memory: 1GB
+    restart: unless-stopped
