@@ -1,6 +1,10 @@
-from fastapi import HTTPException
-from .database import get_db
+from pyrogram import filters
+from pyrogram.types import Message, ChatJoinRequest
+from config import config
+from utils.helpers import check_fsub
 
-def handle_join_request(user_id: int, db = Depends(get_db)):
-    # Implement your join request logic here
-    return {"status": "approved"}
+async def join_request_handler(_, message: ChatJoinRequest):
+    if not await check_fsub(message.from_user.id):
+        await message.decline()
+    else:
+        await message.approve()
