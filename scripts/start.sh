@@ -1,3 +1,4 @@
 #!/bin/bash
-source venv/bin/activate
-uvicorn start:app --reload --host 0.0.0.0 --port 8080
+python3 -m bot.main_handler &
+python3 -m bot.handlers.delete_files &
+echo "Bot started on port 8080!"
