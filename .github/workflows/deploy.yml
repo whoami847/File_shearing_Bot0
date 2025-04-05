@@ -1,7 +1,5 @@
 name: Deploy
-on:
-  push:
-    branches: [main]
+on: [push]
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -9,5 +7,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: koyeb/action@v1
         with:
-          service: your-service-name
+          service: file-share-bot
           token: ${{ secrets.KOYEB_TOKEN }}
