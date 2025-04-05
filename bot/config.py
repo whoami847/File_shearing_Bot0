@@ -1,13 +1,12 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+import os
+from pydantic_settings import BaseSettings
 
 class Config(BaseSettings):
-    API_ID: int = 28774737
-    API_HASH: str = "851190ab85bb0b6dd547fff8e3c35b73"
-    BOT_TOKEN: str = "7671316803:AAFiG_mhL1wy7T1cTB-aL_ktjVAO0vwKvhU"
-    
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        extra="ignore"
-    )
+    API_ID: int = os.getenv("API_ID")  # ENV variable থেকে পড়বে
+    API_HASH: str = os.getenv("API_HASH")
+    BOT_TOKEN: str = os.getenv("BOT_TOKEN")
+
+    class Config:
+        env_file = ".env"
 
 config = Config()
