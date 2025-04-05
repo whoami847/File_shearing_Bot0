@@ -1,8 +1,7 @@
 FROM python:3.10-slim
 
-RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+# Add MongoDB dependencies
+RUN apt-get update && apt-get install -y libssl-dev ca-certificates
 
 WORKDIR /app
 
