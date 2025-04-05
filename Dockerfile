@@ -1,23 +1,25 @@
 FROM python:3.10-slim
 
+# Install system dependencies
 RUN apt-get update && \
     apt-get install -y \
     build-essential \
     libssl-dev \
     ffmpeg \
-    bash
+    && rm -rf /var/lib/apt/lists/*
 
+# Set working directory
 WORKDIR /app
 
-# First copy requirements to cache dependencies
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all files including scripts
+# Copy application files
 COPY . .
 
-# Make script executable and fix line endings
-RUN sed -i 's/\r$//' /app/scripts/start.sh && \
-    chmod +x /app/scripts/start.sh
+# Install TgCrypto for performance
+RUN pip install --no-cache-dir TgCrypto
 
-CMD ["/bin/bash", "/app/scripts/start.sh"]
+# Run the application
+CMD ["python3", "-m", "bot.main_handler"]
