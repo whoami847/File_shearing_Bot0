@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Start web server
-uvicorn web.routes:app --host 0.0.0.0 --port 8080 &
+uvicorn bot.web.routes:router --host 0.0.0.0 --port 8080 &
 
-# Start bot
+# Start Telegram bot
 python3 -m bot.main_handler &
 
-# Keep container alive
+# Keep container running
 wait
