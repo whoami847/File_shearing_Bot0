@@ -1,16 +1,5 @@
 services:
   - name: file-share-bot
-    ports:
-      - port: 8080
-        http_path: /
-    routes:
-      - /:8080
-    env:
-      - name: BOT_TOKEN
-        value: "7671316803:AAFiG_mhL1wy7T1cTB-aL_ktjVAO0vwKvhU"
-      - name: DATABASE_URL
-        value: "mongodb+srv://Anime1:Anime1@cluster0.030ybld.mongodb.net/Cluster0?retryWrites=true&w=majority&appName=Cluster0"
-      - name: FSUB_CHANNELS
-        value: "-1002644513465,-1002656647177"
     docker:
-      image: koyeb/file-share-bot:latest
+      build:
+        dockerfile: ./Dockerfile  # Now in root
