@@ -1,9 +1,5 @@
-__pycache__/
-*.py[cod]
 .env
-venv/
-*.sqlite
+__pycache__
 uploads/
-encoded/
 *.log
-.DS_Store
+*.session
