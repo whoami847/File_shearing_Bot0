@@ -10,13 +10,15 @@ RUN apt-get update && \
 
 WORKDIR /app
 
-# Set Python path
-ENV PYTHONPATH=/app
+# Upgrade pip first
+RUN pip install --upgrade pip
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
+
+ENV PYTHONPATH=/app
 
 HEALTHCHECK --interval=30s --timeout=3s \
     CMD curl -f http://localhost:8080/health || exit 1
