@@ -3,15 +3,7 @@ motor==3.1.1
 TgCrypto==1.2.2
 python-dotenv>=0.21.0
 uvicorn==0.20.0
-pyrogram==2.0.106
-motor==3.1.1
-TgCrypto==1.2.2
-python-dotenv>=0.21.0
-uvicorn==0.20.0
-fastapi==0.85.0
+fastapi==0.95.2  # Last version compatible with Pydantic v1
 aiohttp==3.8.6
-pydantic==1.10.7  # Compatible with fastapi 0.85.0
-pydantic-settings==1.0.3  # Compatible with pydantic 1.x
-aiohttp==3.8.6
-pydantic==1.10.7  # Compatible with fastapi 0.85.0
-pydantic-settings==1.0.3  # Compatible with pydantic 1.x
+pydantic==1.10.7
+pydantic-settings==0.4.2  # Last v1-compatible version
