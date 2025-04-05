@@ -1,7 +1,13 @@
-from typing import List, Dict
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from config import config
 
-def generate_buttons(button_config: List[Dict[str, str]]):
-    return [
-        {"text": btn["text"], "callback_data": btn["action"]}
-        for btn in button_config
-    ]
+def start_markup():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("Upload File", callback_data="upload")]
+    ])
+
+def fsub_markup():
+    buttons = []
+    for channel in config.FSUB_CHANNELS:
+        buttons.append([InlineKeyboardButton(f"Channel {channel}", url=f"t.me/{channel}")])
+    return InlineKeyboardMarkup(buttons)
