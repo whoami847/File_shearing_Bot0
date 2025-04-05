@@ -1,41 +1,16 @@
-from fastapi import FastAPI
-from contextlib import asynccontextmanager
-from fastapi.middleware.cors import CORSMiddleware
+version: '3.8'
 
-# Lifespan management for proper startup/shutdown
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Startup code
-    print("Starting web server...")
-    yield
-    # Shutdown code
-    print("Web server shutting down...")
-
-app = FastAPI(lifespan=lifespan)
-
-# Configure CORS (adjust origins as needed)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.get("/")
-async def root():
-    return {
-        "message": "File Sharing Bot API",
-        "docs": "/docs",
-        "health_check": "/health"
-    }
-
-@app.get("/health")
-async def health_check():
-    return {
-        "status": "ok",
-        "details": {
-            "version": "1.0.0",
-            "service": "file-sharing-bot"
-        }
-    }
+services:
+  bot:
+    build: .
+    environment:
+      - PYTHONPATH=/app
+      - BOT_TOKEN=${BOT_TOKEN}
+      - API_ID=${API_ID}
+      - API_HASH=${API_HASH}
+    command: >
+      sh -c "uvicorn web.routes:app --host 0.0.0.0 --port 8080 & 
+      python -m bot.main_handler"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
