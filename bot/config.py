@@ -1,11 +1,10 @@
-import os
 from pydantic_settings import BaseSettings
 
 class Config(BaseSettings):
-    API_ID: int = os.getenv("API_ID")  # ENV variable থেকে পড়বে
-    API_HASH: str = os.getenv("API_HASH")
-    BOT_TOKEN: str = os.getenv("BOT_TOKEN")
-
+    API_ID: int = 18662358  # Your new API ID
+    API_HASH: str = "6ee14b1c055ba7466d6bf293852d3765"  # Your new API hash
+    BOT_TOKEN: str = "7671316803:AAFiG_mhL1wy7T1cTB-aL_ktjVAO0vwKvhU"  # From @BotFather
+    
     class Config:
         env_file = ".env"
 
