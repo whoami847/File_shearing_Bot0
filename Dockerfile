@@ -9,13 +9,15 @@ RUN apt-get update && \
 
 WORKDIR /app
 
+# First copy requirements to cache dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy all files including scripts
 COPY . .
 
-# Make scripts executable
-RUN chmod +x /app/scripts/start.sh
+# Make script executable and fix line endings
+RUN sed -i 's/\r$//' /app/scripts/start.sh && \
+    chmod +x /app/scripts/start.sh
 
-CMD ["/app/scripts/start.sh"]  # Full path to script
+CMD ["/bin/bash", "/app/scripts/start.sh"]
