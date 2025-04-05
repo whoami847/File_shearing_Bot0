@@ -1,20 +1,12 @@
 name: Docker
-on:
-  push:
-    branches: [main]
+on: [push]
 jobs:
-  build-push:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
+      - uses: docker/build-push-action@v4
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          context: .
+          context: ./docker
           push: true
-          tags: your-docker-username/your-image:latest
+          tags: file-share-bot:latest
