@@ -1,40 +1,34 @@
+import logging
 import asyncio
-from pyrogram import Client
-from bot.config import config
-from fastapi import FastAPI
-import uvicorn
+from pyrogram import Client, filters
 
-app = FastAPI()
+# লগিং সেটআপ
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
-@app.get("/health")
-async def health_check():
-    return {"status": "ok"}
+app = Client(
+    "my_bot",
+    api_id=123456,       # আপনার API_ID দিয়ে রিপ্লেস করুন
+    api_hash="abc123",   # আপনার API_HASH দিয়ে রিপ্লেস করুন
+    bot_token="TOKEN"    # আপনার বট টোকেন দিয়ে রিপ্লেস করুন
+)
 
-async def run_bot():
-    bot = Client(
-        "file_bot",
-        api_id=config.API_ID,
-        api_hash=config.API_HASH,
-        bot_token=config.BOT_TOKEN
-    )
-    await bot.start()
-    print("🤖 Bot started successfully!")
-    await asyncio.Event().wait()  # Keep running indefinitely
+@app.on_message(filters.command("start"))
+async def start(client, message):
+    logger.info(f"User {message.from_user.id} sent /start")
+    await message.reply("🎉 বট এক্টিভ! /help লিখে কমান্ডগুলো দেখুন")
+
+@app.on_message(filters.command("ping"))
+async def ping(client, message):
+    await message.reply("🏓 পং! বট লাইভ আছে")
 
 async def main():
-    # Start both web server and bot
-    server = uvicorn.Server(
-        config=uvicorn.Config(
-            app=app,
-            host="0.0.0.0",
-            port=8080,
-            log_level="info"
-        )
-    )
-    await asyncio.gather(
-        server.serve(),
-        run_bot()
-    )
+    await app.start()
+    logger.info("বট সফলভাবে স্টার্ট হয়েছে!")
+    await asyncio.Event().wait()  # বট চলতে থাকবে
 
 if __name__ == "__main__":
     asyncio.run(main())
