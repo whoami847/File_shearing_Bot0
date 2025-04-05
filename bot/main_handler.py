@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from pyrogram import Client, filters
-from pyrogram.errors import RPCError, ConnectionClosed  # Updated imports
+from pyrogram.errors import RPCError, ConnectionError  # Correct import names
 from bot.config import config
 
 # Configure logging
@@ -11,7 +11,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Initialize client
 app = Client(
     name="my_bot",
     api_id=config.API_ID,
@@ -33,18 +32,15 @@ async def run_bot():
             logger.info("Bot started successfully")
             await app.send_message(config.OWNER_ID, "🤖 Bot deployed and online!")
             
-            # Keep connection alive
             while True:
                 await asyncio.sleep(300)
                 await app.get_me()
                 
-        except (ConnectionClosed, RPCError) as e:  # Updated exception handling
+        except (ConnectionError, RPCError) as e:
             logger.error(f"Connection error: {e}, reconnecting in 5 seconds...")
-            await app.stop()
             await asyncio.sleep(5)
         except Exception as e:
             logger.error(f"Critical error: {e}")
-            await app.stop()
             break
 
 if __name__ == "__main__":
