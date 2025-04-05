@@ -1,28 +1,30 @@
+import asyncio
 from pyrogram import Client
 from config import config
-from handlers import (
-    start,
-    commands,
-    broadcast,
-    file_sharing,
-    fsub
-)
+from database import db
+from web.routes import router
+from fastapi import FastAPI
 
-bot = Client(
-    "file_share_bot",
-    api_id=config.API_ID,
-    api_hash=config.API_HASH,
-    bot_token=config.BOT_TOKEN
-)
+# Initialize Web App
+web_app = FastAPI()
+web_app.include_router(router)
 
-# Register handlers
-bot.add_handler(start.start_handler)
-bot.add_handler(commands.commands_handler)
-bot.add_handler(broadcast.broadcast_handler)
-bot.add_handler(file_sharing.file_handler)
-bot.add_handler(fsub.fsub_handler)
+async def run_bot():
+    # Connect to database
+    await db.connect()
+    
+    # Start Telegram client
+    bot = Client(
+        "file_bot",
+        api_id=config.API_ID,
+        api_hash=config.API_HASH,
+        bot_token=config.BOT_TOKEN
+    )
+    
+    async with bot:
+        print("🤖 Bot started successfully!")
+        await asyncio.Event().wait()  # Run indefinitely
 
-async def start_bot():
-    await bot.start()
-    print("Bot started!")
-    await bot.idle()
+if __name__ == "__main__":
+    # Start both web server and bot
+    asyncio.run(run_bot())
