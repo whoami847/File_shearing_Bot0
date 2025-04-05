@@ -1,7 +1,17 @@
-from typing import List
-from fastapi import BackgroundTasks
-from .messages import send_message
+from pyrogram import filters
+from pyrogram.types import Message
+from config import config
+from database import db
 
-async def broadcast_message(users: List[int], message: str, bg_tasks: BackgroundTasks):
-    for user_id in users:
-        bg_tasks.add_task(send_message, user_id, message)
+async def broadcast_handler(_, message: Message):
+    if message.from_user.id not in config.ADMINS:
+        return
+    
+    users_col = await db.get_collection("users")
+    users = await users_col.find().to_list(None)
+    
+    for user in users:
+        try:
+            await message.copy(user["_id"])
+        except Exception as e:
+            print(f"Broadcast error: {e}")
